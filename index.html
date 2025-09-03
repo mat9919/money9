@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>แอปการเงินส่วนบุคคล</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- หัวข้อบนสุด -->
+    <header class="header">
+      <h1><i class="fas fa-wallet"></i> บันทึกรายรับ-รายจ่าย</h1>
+      <div class="period-selector">
+        <button class="btn-period active" data-period="month">ประจำเดือน</button>
+        <button class="btn-period" data-period="year">ประจำปี</button>
+      </div>
+    </header>
+
+    <!-- สรุปยอดรวม -->
+    <div class="summary">
+      <div class="summary-item income">
+        <h3>รวมรายรับ</h3>
+        <p id="total-income">0.00 บาท</p>
+      </div>
+      <div class="summary-item expense">
+        <h3>รวมรายจ่าย</h3>
+        <p id="total-expense">0.00 บาท</p>
+      </div>
+      <div class="summary-item balance">
+        <h3>คงเหลือ</h3>
+        <p id="balance">0.00 บาท</p>
+      </div>
+    </div>
+
+    <!-- เมนูรายรับ -->
+    <section class="menu-section">
+      <h2 class="menu-title"><i class="fas fa-arrow-down"></i> รายรับ</h2>
+      <div class="submenu">
+        <button class="btn-income" data-type="salary">
+          <i class="fas fa-briefcase"></i> เงินเดือน
+        </button>
+        <button class="btn-income" data-type="other_income">
+          <i class="fas fa-coins"></i> รายรับอื่น
+        </button>
+      </div>
+      <button class="btn-total" id="btn-total-income">รวมรายรับ</button>
+    </section>
+
+    <!-- เมนูรายจ่าย -->
+    <section class="menu-section">
+      <h2 class="menu-title"><i class="fas fa-arrow-up"></i> รายจ่าย</h2>
+      <div class="submenu">
+        <button class="btn-expense" data-type="water-electric">
+          <i class="fas fa-bolt"></i> ค่าน้ำ ค่าไฟ
+        </button>
+        <button class="btn-expense" data-type="credit_card">
+          <i class="fas fa-credit-card"></i> ค่าบัตรเครดิต
+        </button>
+        <button class="btn-expense" data-type="shopee_paylater">
+          <i class="fab fa-shopware"></i> Shopee / sPayLater / EasyCash
+        </button>
+        <button class="btn-expense" data-type="education">
+          <i class="fas fa-school"></i> จ่ายค่าเรียนหลาน
+        </button>
+        <button class="btn-expense" data-type="mother">
+          <i class="fas fa-heart"></i> จ่ายให้แม่
+        </button>
+      </div>
+
+      <!-- เมนูย่อย - บัตรเครดิต -->
+      <div class="submenu-credit hidden">
+        <h3><i class="fas fa-credit-card"></i> เลือกบัตรเครดิต</h3>
+        <div class="card-grid">
+          <button class="card-btn bbl" data-card="bbl">ธนาคารกรุงเทพฯ</button>
+          <button class="card-btn kbank-visa-shopee" data-card="kbank-visa-shopee">กสิกร Visa Shopee</button>
+          <button class="card-btn kbank-visa-plat" data-card="kbank-visa-plat">กสิกร Visa Platinum</button>
+          <button class="card-btn kbank-master" data-card="kbank-master">กสิกร Mastercard</button>
+          <button class="card-btn ktb" data-card="ktb">กรุงไทย</button>
+          <button class="card-btn firstchoice" data-card="firstchoice">Firstchoice</button>
+          <button class="card-btn central" data-card="central">CentralCard</button>
+        </div>
+      </div>
+
+      <!-- เมนูย่อย - Shopee PayLater -->
+      <div class="submenu-shopee hidden">
+        <h3><i class="fab fa-shopware"></i> เลือกบริการ Shopee</h3>
+        <div class="card-grid">
+          <button class="shopee-btn splay-utx9919" data-shopee="splay-utx9919">sPayLater Utx9919</button>
+          <button class="shopee-btn easycash-utx9919" data-shopee="easycash-utx9919">EasyCash Utx9919</button>
+          <button class="shopee-btn splay-note3216" data-shopee="splay-note3216">sPayLater Note3216</button>
+          <button class="shopee-btn easycash-note3216" data-shopee="easycash-note3216">EasyCash Note3216</button>
+          <button class="shopee-btn splay-limit" data-shopee="splay-limit">Shopee LimitLater Note</button>
+          <button class="shopee-btn lazada-laz7557" data-shopee="lazada-laz7557">Lazada Laz7557</button>
+          <button class="shopee-btn line-bk" data-shopee="line-bk">Line BK</button>
+        </div>
+      </div>
+
+      <button class="btn-total" id="btn-total-expense">รวมรายจ่าย</button>
+    </section>
+
+    <!-- ปุ่มล้างข้อมูล -->
+    <div class="clear-section">
+      <button id="clear-data" class="btn-clear">ล้างข้อมูลทั้งหมด</button>
+    </div>
+
+    <!-- โมเดลการป้อนจำนวนเงิน -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <h3 id="modal-title">ระบุจำนวนเงิน</h3>
+        <input type="number" id="amount-input" placeholder="0.00" step="0.01" />
+        <div class="modal-buttons">
+          <button id="confirm-btn">ยืนยัน</button>
+          <button id="cancel-btn">ยกเลิก</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- แจ้งเตือน -->
+    <div id="toast" class="toast hidden">บันทึกข้อมูลเรียบร้อย</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
